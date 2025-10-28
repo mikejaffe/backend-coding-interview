@@ -14,6 +14,7 @@ RSpec.describe 'api/v1/photographers', type: :request do
       parameter name: :Authorization, in: :header, type: :string, required: true
       parameter name: :page, in: :query, type: :integer, required: false
       parameter name: :per_page, in: :query, type: :integer, required: false
+      parameter name: :name, in: :query, type: :string, required: false, description: 'Filter by photographer name (partial match)'
 
       response '200', 'photographers retrieved' do
         let!(:photographers) { create_list(:photographer, 2) }
@@ -22,6 +23,18 @@ RSpec.describe 'api/v1/photographers', type: :request do
           data = JSON.parse(response.body)
           expect(data['photographers']).to be_an(Array)
           expect(data['photographers'].length).to eq(2)
+        end
+      end
+
+      response '200', 'photographers filtered by name' do
+        let!(:photographer1) { create(:photographer, name: 'John Smith') }
+        let!(:photographer2) { create(:photographer, name: 'Jane Doe') }
+        let(:name) { 'John' }
+        
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data['photographers'].length).to eq(1)
+          expect(data['photographers'].first['name']).to eq('John Smith')
         end
       end
     end

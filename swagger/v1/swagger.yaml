@@ -29,9 +29,15 @@ paths:
         required: false
         schema:
           type: integer
+      - name: name
+        in: query
+        required: false
+        description: Filter by photographer name (partial match)
+        schema:
+          type: string
       responses:
         '200':
-          description: photographers retrieved
+          description: photographers filtered by name
     post:
       summary: Create Photographer
       tags:
