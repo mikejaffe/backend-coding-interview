@@ -2,8 +2,8 @@ task import_csv: :environment do
   require "csv"
   require "open-uri"
 
-  csv_url = "https://github.com/clever-real-estate/backend-coding-interview/blob/main/photos.csv?raw=true"
-  csv_file = URI.open(csv_url)
+
+  csv_file = File.read(Rails.root.join("photos.csv"))
   csv = CSV.parse(csv_file, headers: true)
   csv.each do |row|
     photographer = Photographer.find_or_initialize_by(external_id: row["photographer_id"])

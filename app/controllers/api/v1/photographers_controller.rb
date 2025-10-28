@@ -1,6 +1,10 @@
 class Api::V1::PhotographersController < Api::V1::BaseController
   def index
-    @photographers = Photographer.select("photographers.*, (select count(*) from photos where photos.photographer_id = photographers.id) as photo_count").page(params[:page] || 1).per(params[:per_page] || 10)
+    @photographers = Photographer.select("photographers.*, (select count(*) from photos where photos.photographer_id = photographers.id) as photo_count")
+    if params[:name].present?
+      @photographers = @photographers.where("name LIKE ?", "%#{params[:name]}%")
+    end
+    @photographers = @photographers.page(params[:page] || 1).per(params[:per_page] || 10)
   end
 
   def show
