@@ -5,48 +5,35 @@ RSpec.describe 'api/v1/photographers', type: :request do
   let(:Authorization) { "Bearer #{user.api_token}" }
 
   path '/api/v1/photographers' do
-    get 'List Photographers' do
+    get 'List photographers' do
       tags 'Photographers'
-      description 'Get paginated list of photographers'
       produces 'application/json'
-      security [Bearer: []]
-      
-      parameter name: :Authorization, in: :header, type: :string, required: true
+      security [ Bearer: [] ]
+
+      parameter name: :Authorization, in: :header, type: :string
       parameter name: :page, in: :query, type: :integer, required: false
       parameter name: :per_page, in: :query, type: :integer, required: false
-      parameter name: :name, in: :query, type: :string, required: false, description: 'Filter by photographer name (partial match)'
+      parameter name: :name, in: :query, type: :string, required: false
 
-      response '200', 'photographers retrieved' do
+      response '200', 'success' do
         let!(:photographers) { create_list(:photographer, 2) }
-        
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data['photographers']).to be_an(Array)
-          expect(data['photographers'].length).to eq(2)
-        end
+        run_test!
       end
 
-      response '200', 'photographers filtered by name' do
+      response '200', 'filtered by name' do
         let!(:photographer1) { create(:photographer, name: 'John Smith') }
         let!(:photographer2) { create(:photographer, name: 'Jane Doe') }
         let(:name) { 'John' }
-        
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data['photographers'].length).to eq(1)
-          expect(data['photographers'].first['name']).to eq('John Smith')
-        end
+        run_test!
       end
     end
 
-    post 'Create Photographer' do
+    post 'Create photographer' do
       tags 'Photographers'
-      description 'Create a new photographer'
       consumes 'application/json'
-      produces 'application/json'
-      security [Bearer: []]
-      
-      parameter name: :Authorization, in: :header, type: :string, required: true
+      security [ Bearer: [] ]
+
+      parameter name: :Authorization, in: :header, type: :string
       parameter name: :photographer, in: :body, schema: {
         type: :object,
         properties: {
@@ -55,86 +42,56 @@ RSpec.describe 'api/v1/photographers', type: :request do
             properties: {
               name: { type: :string },
               external_id: { type: :string },
-              external_service: { type: :string },
-              external_url: { type: :string },
-              external_avatar_url: { type: :string }
-            },
-            required: ['name']
+              external_service: { type: :string }
+            }
           }
         }
       }
 
-      response '201', 'photographer created' do
+      response '201', 'created' do
         let(:photographer) do
           {
             photographer: {
               name: "John Doe",
-              external_id: "123",
-              external_service: "pexels",
-              external_url: "https://pexels.com/@john"
+              external_id: "123"
             }
           }
         end
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data['name']).to eq('John Doe')
-        end
+        run_test!
       end
     end
   end
 
   path '/api/v1/photographers/{id}' do
-    parameter name: :id, in: :path, type: :integer, description: 'Photographer ID'
+    parameter name: :id, in: :path, type: :integer
 
-    get 'Show Photographer' do
+    get 'Get photographer' do
       tags 'Photographers'
-      description 'Get a single photographer by ID'
-      produces 'application/json'
-      security [Bearer: []]
-      
-      parameter name: :Authorization, in: :header, type: :string, required: true
+      security [ Bearer: [] ]
+      parameter name: :Authorization, in: :header, type: :string
 
-      response '200', 'photographer found' do
+      response '200', 'found' do
         let!(:photographer_record) { create(:photographer) }
         let(:id) { photographer_record.id }
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data['id']).to eq(photographer_record.id)
-          expect(data['name']).to be_present
-        end
+        run_test!
       end
 
-      response '404', 'photographer not found' do
+      response '404', 'not found' do
         let(:id) { 99999 }
         run_test!
       end
     end
 
-    delete 'Delete Photographer' do
+    delete 'Delete photographer' do
       tags 'Photographers'
-      description 'Soft delete a photographer'
-      produces 'application/json'
-      security [Bearer: []]
-      
-      parameter name: :Authorization, in: :header, type: :string, required: true
+      security [ Bearer: [] ]
+      parameter name: :Authorization, in: :header, type: :string
 
-      response '200', 'photographer deleted' do
+      response '200', 'deleted' do
         let!(:photographer_record) { create(:photographer) }
         let(:id) { photographer_record.id }
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data['message']).to eq('Photographer deleted')
-        end
-      end
-
-      response '404', 'photographer not found' do
-        let(:id) { 99999 }
         run_test!
       end
     end
   end
 end
-

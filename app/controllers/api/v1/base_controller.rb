@@ -1,8 +1,13 @@
 class Api::V1::BaseController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_format
   skip_before_action :verify_authenticity_token
 
   private
+
+  def set_format
+    request.format = :json
+  end
 
   def authenticate_user!
     unless current_user
