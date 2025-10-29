@@ -6,4 +6,3 @@ json.photographers do
     json.partial! "api/v1/photographers/photographer", photographer: photographer
   end
 end
-

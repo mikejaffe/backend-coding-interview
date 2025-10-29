@@ -40,7 +40,7 @@ RSpec.describe 'api/v1/sessions', type: :request do
   path '/api/v1/logout' do
     delete 'Logout' do
       tags 'Authentication'
-      security [Bearer: []]
+      security [ Bearer: [] ]
 
       parameter name: :Authorization, in: :header, type: :string
 

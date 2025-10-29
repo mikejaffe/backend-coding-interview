@@ -18,7 +18,7 @@ class Api::V1::BaseController < ApplicationController
   def current_user
     @current_user ||= begin
       header = request.headers["Authorization"]
-      token = header.split(' ').last if header
+      token = header.split(" ").last if header
       User.find_by(api_token: token) if token
     end
   end
