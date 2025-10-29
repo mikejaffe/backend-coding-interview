@@ -44,7 +44,7 @@ curl -X GET http://localhost:3000/api/v1/photos \
 ```
  
 
-## Architecture Notes
+## Architecture Decisions
 
 **Rails 8 + SQLite**
 - Rails 8 for rapid API development, SQLite is suffecient for this purpose. Postgres would be my choice for prouction.
@@ -109,8 +109,6 @@ kamal deploy
  
 
 ## Import CSV Data
-
-The CSV is automatically downloaded and imported:
 
 ```bash
 rake import_csv
