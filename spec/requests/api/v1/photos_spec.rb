@@ -91,6 +91,32 @@ RSpec.describe 'api/v1/photos', type: :request do
       end
     end
 
+    put 'Update photo' do
+      tags 'Photos'
+      consumes 'application/json'
+      security [ Bearer: [] ]
+      parameter name: :Authorization, in: :header, type: :string
+      parameter name: :photo, in: :body, schema: {
+        type: :object,
+        properties: {
+          photo: {
+            type: :object,
+            properties: {
+              width: { type: :integer },
+              height: { type: :integer }
+            }
+          }
+        }
+      }
+
+      response '200', 'updated' do
+        let!(:photo_record) { create(:photo) }
+        let(:id) { photo_record.id }
+        let(:photo) { { photo: { width: 5000 } } }
+        run_test!
+      end
+    end
+
     delete 'Delete photo' do
       tags 'Photos'
       security [ Bearer: [] ]

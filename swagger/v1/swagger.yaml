@@ -87,6 +87,31 @@ paths:
           description: found
         '404':
           description: not found
+    put:
+      summary: Update photographer
+      tags:
+      - Photographers
+      security:
+      - Bearer: []
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                photographer:
+                  type: object
+                  properties:
+                    name:
+                      type: string
     delete:
       summary: Delete photographer
       tags:
@@ -187,6 +212,33 @@ paths:
           description: found
         '404':
           description: not found
+    put:
+      summary: Update photo
+      tags:
+      - Photos
+      security:
+      - Bearer: []
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: object
+                  properties:
+                    width:
+                      type: integer
+                    height:
+                      type: integer
     delete:
       summary: Delete photo
       tags:

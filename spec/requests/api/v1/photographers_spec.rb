@@ -82,6 +82,31 @@ RSpec.describe 'api/v1/photographers', type: :request do
       end
     end
 
+    put 'Update photographer' do
+      tags 'Photographers'
+      consumes 'application/json'
+      security [ Bearer: [] ]
+      parameter name: :Authorization, in: :header, type: :string
+      parameter name: :photographer, in: :body, schema: {
+        type: :object,
+        properties: {
+          photographer: {
+            type: :object,
+            properties: {
+              name: { type: :string }
+            }
+          }
+        }
+      }
+
+      response '200', 'updated' do
+        let!(:photographer_record) { create(:photographer) }
+        let(:id) { photographer_record.id }
+        let(:photographer) { { photographer: { name: "Updated Name" } } }
+        run_test!
+      end
+    end
+
     delete 'Delete photographer' do
       tags 'Photographers'
       security [ Bearer: [] ]
