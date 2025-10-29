@@ -47,7 +47,7 @@ curl -X GET http://localhost:3000/api/v1/photos \
 ## Architecture Decisions
 
 **Rails 8 + SQLite**
-- Rails 8 for rapid API development, SQLite is suffecient for this purpose. Postgres would be my choice for prouction.
+- Rails 8 for rapid API development, SQLite is sufficient for this purpose. Postgres would be my choice for production.
 
 **Simple Token Based Authentication**
 - Simpler implementation for time-constrained challenge, would most likely use OAUTH / JWT in production apps
@@ -61,7 +61,6 @@ curl -X GET http://localhost:3000/api/v1/photos \
 **Soft Deletes**
 - Preserve data integrity by marking records as deleted vs hard deletes and allows recovery if needed
 - Maintains referential integrity, and audit friendly.
-
 
 ## Testing
 
@@ -81,6 +80,7 @@ bundle exec rspec
 - Caching - Redis for frequently accessed photos and photographers
 - Photo uploads?? using carrier wave and S3
 - Background jobs with Sidekiq for uploads
+- Counter caching for Photographer Photos
 
  
 ## Production Deployment

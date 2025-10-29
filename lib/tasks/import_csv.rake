@@ -8,7 +8,6 @@ task import_csv: :environment do
   csv.each do |row|
     photographer = Photographer.find_or_initialize_by(external_id: row["photographer_id"])
     photographer.name = row["photographer"]
-    photographer.external_avatar_url = row["photographer_avatar_url"]
     photographer.external_service = row["source"] || "pexels"
     photographer.external_url = row["photographer_url"]
     photographer.save!

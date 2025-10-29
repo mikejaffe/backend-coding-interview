@@ -2,7 +2,7 @@
     json.external_id photo.external_id
     json.external_source photo.photographer.external_service
     json.photographer do
-      json.extract! photo.photographer, :id, :name, :external_avatar_url, :external_url
+      json.extract! photo.photographer, :id, :name, :external_url
     end
     json.sizes do
       json.original photo.original_url

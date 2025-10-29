@@ -1,6 +1,6 @@
 class Api::V1::PhotographersController < Api::V1::BaseController
   def index
-    @photographers = Photographer.select("photographers.*, (select count(*) from photos where photos.photographer_id = photographers.id) as photo_count")
+    @photographers = Photographer.with_photo_count
     if params[:name].present?
       @photographers = @photographers.where("name LIKE ?", "%#{params[:name]}%")
     end
@@ -8,7 +8,7 @@ class Api::V1::PhotographersController < Api::V1::BaseController
   end
 
   def show
-    @photographer = Photographer.select("photographers.*, (select count(*) from photos where photos.photographer_id = photographers.id) as photo_count").where(id: params[:id]).first
+    @photographer = Photographer.with_photo_count.where(id: params[:id]).first
     if @photographer.nil?
       render json: { error: "Photographer not found" }, status: :not_found and return
     end
@@ -47,6 +47,6 @@ class Api::V1::PhotographersController < Api::V1::BaseController
   private
 
   def photographer_params
-    params.require(:photographer).permit(:name, :external_avatar_url, :external_url, :external_service, :external_id)
+    params.require(:photographer).permit(:name, :external_url, :external_service, :external_id)
   end
 end

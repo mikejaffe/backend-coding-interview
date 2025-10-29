@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_28_215305) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_29_152403) do
   create_table "photographers", force: :cascade do |t|
     t.string "name", null: false
-    t.string "external_avatar_url"
     t.string "external_service"
     t.string "external_id"
     t.string "external_url"
